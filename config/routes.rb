@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'sessions#destroy'
 
   resources :users
+  get '/account_activation/', to: 'users#account_activation'
 
 
 end

@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
   def remember(user)
     user.update_attribute(:remember_digest, digest(new_token))
     cookies.permanent.signed[:user_id] = user.id
+    user.remember_token = new_token
     cookies.permanent[:remember_token] = user.remember_token
   end
 

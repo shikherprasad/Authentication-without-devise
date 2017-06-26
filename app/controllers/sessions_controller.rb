@@ -3,16 +3,32 @@ class SessionsController < ApplicationController
   def new
   end
 
+  # def create
+  #   user = User.find_by(email: params[:session][:email])
+  #   if user && user.authenticate(params[:session][:password])
+  #     session[:user_id] = user.id
+  #     remember user
+  #     redirect_dest user
+  #   else
+  #     render 'new'
+  #   end
+  # end
+
   def create
-    user = User.find_by(email: params[:session][:email])
+    user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-      session[:user_id] = user.id
-      remember user
-      redirect_dest user
+      if user.activated?
+        session[:user_id] = user.id
+        remember(user)
+        redirect_dest user
+      else
+        redirect_to root_url
+      end
     else
       render 'new'
     end
   end
+
 
   def destroy
     if logged_in?
